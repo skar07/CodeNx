@@ -9,6 +9,7 @@
     "module": "ESNext",
     "strict": true,
     "moduleResolution": "Node",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
