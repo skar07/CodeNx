@@ -6,6 +6,7 @@ import * as data from './quiz.json'
 
 async function start() {
       try {
+            //connectDB
             await connectDB(config.MONGO_URI)
             await Quiz.deleteMany()
             await Quiz.create(data)
@@ -17,4 +18,4 @@ async function start() {
       }
 }
 
-start();
+start()
