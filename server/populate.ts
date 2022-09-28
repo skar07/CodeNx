@@ -1,7 +1,7 @@
 import config from './config'
 
 import { connectDB } from './db/connect'
-import { Quiz } from './models/quiz'
+import { Quiz } from './models/Quiz'
 import * as data from './quiz.json'
 
 async function start() {

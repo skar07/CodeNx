@@ -2,12 +2,14 @@ import { Schema, model } from "mongoose";
 import bcrypt from 'bcryptjs';
 import * as jwt from "jsonwebtoken";
 
-interface IUser {
+interface IUser extends Document {
       name: string;
       email: string;
+      userId: string;
       password: string;
 }
 
+/** Model Schema implementation  */
 const userSchema = new Schema<IUser>(
       {
             name: {
@@ -31,21 +33,24 @@ const userSchema = new Schema<IUser>(
       }
 )
 
+/** Middleware to handle hash generation and password hashing */
 userSchema.pre('save', async function () {
       const salt = await bcrypt.genSalt(10)
       this.password = await bcrypt.hash(this.password, salt)
 })
 
-userSchema.methods.createJWT= ():string  => {
+/** Creation of JWT token */
+userSchema.methods.createJWT = () => {
       return jwt.sign(
             { userId: this._id, name: this.name },
             process.env.JWT_SECET as string,
             {
                   expiresIn: process.env.JWT_LIFETIME
             }
-      )
+      );
 }
 
+/** Comparing given password with correct password  */
 userSchema.methods.comparePassword = async function (candidatePassword: string) {
       const isMatch = await bcrypt.compare(candidatePassword, this.password)
       return isMatch
