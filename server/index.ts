@@ -3,13 +3,14 @@ import config from './config'
 
 const app: Application = express()
 import { connectDB } from './db/connect'
+import {authRouter} from './routes/authentication'
 
 //routes
 
 app.get('/api', (req: Request, res: Response): void => {
     res.json({ message: "Hello, World!" })
 });
-
+app.use('/api/v1/login', authRouter)
 const PORT = config.PORT || 3000;
 async function start(): Promise<void> {
     try {
