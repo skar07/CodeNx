@@ -4,3 +4,4 @@ export interface IUser {
       userId: string;
       password: string;
 }
+// TODO: move all interfaces here
