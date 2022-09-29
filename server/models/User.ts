@@ -1,16 +1,16 @@
 import { Schema, model } from "mongoose";
 import bcrypt from 'bcryptjs';
 import * as jwt from "jsonwebtoken";
+import { IUser } from "../interfaces/user";
 
-interface IUser extends Document {
-      name: string;
-      email: string;
-      userId: string;
-      password: string;
+export interface IUserModel extends IUser, Document {
+      createJWT(): string;
+      comparePassword(): boolean;
 }
 
+
 /** Model Schema implementation  */
-const userSchema = new Schema<IUser>(
+export const userSchema = new Schema<IUser>(
       {
             name: {
                   type: String,
@@ -40,7 +40,7 @@ userSchema.pre('save', async function () {
 })
 
 /** Creation of JWT token */
-userSchema.methods.createJWT = () => {
+userSchema.methods.createJWT = function (): string {
       return jwt.sign(
             { userId: this._id, name: this.name },
             process.env.JWT_SECET as string,
@@ -51,7 +51,7 @@ userSchema.methods.createJWT = () => {
 }
 
 /** Comparing given password with correct password  */
-userSchema.methods.comparePassword = async function (candidatePassword: string) {
+userSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
       const isMatch = await bcrypt.compare(candidatePassword, this.password)
       return isMatch
 }
