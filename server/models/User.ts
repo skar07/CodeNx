@@ -5,7 +5,7 @@ import { IUser } from "../interfaces/user";
 
 export interface IUserModel extends IUser, Document {
       createJWT(): string;
-      comparePassword(): boolean;
+      comparePassword(candidatePassword:string): string;
 }
 
 
